@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Magic 💗</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap');
+
+:root {
+  --pink: #ff8fb3;
+  --light-pink: #ffe1ec;
+  --purple: #d9c4ff;
+  --cream: #fff9f2;
+  --text: #75465b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Baloo 2', cursive;
+  background: linear-gradient(135deg, #fff1f7, #f8efff, #fff8e9);
+  color: var(--text);
+  text-align: center;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible {
+  outline: 3px solid #a67be7;
+  outline-offset: 4px;
+}
+
+.screen {
+  display: none;
+  min-height: 100svh;
+  padding: 45px 18px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  animation: appear .65s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  line-height: 1.15;
+  margin: 12px 0;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 6vw, 2.5rem);
+  margin: 10px 0;
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.hand {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+}
+
+.card {
+  width: min(100%, 500px);
+  padding: 28px 20px;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  background: #ffffffbf;
+  box-shadow: 0 12px 35px #d89ab52b;
+}
+
+.btn {
+  background: linear-gradient(135deg, #ff9cbe, #d5b6ff);
+  color: white;
+  padding: 13px 27px;
+  margin: 10px 5px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  box-shadow: 0 5px 0 #d59ab9;
+  transition: transform .2s;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #d59ab9;
+}
+
+.emoji {
+  font-size: clamp(4rem, 15vw, 7rem);
+  animation: float 2s ease-in-out infinite;
+}
+
+.floaty {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 7s linear infinite;
+  opacity: .65;
+}
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 99;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -30px;
+  animation: fall linear forwards;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
+}
+
+@keyframes drift {
+  from { transform: translateY(105vh) rotate(0deg); }
+  to { transform: translateY(-15vh) rotate(360deg); }
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+@keyframes wiggle {
+  0%,100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+.bouncy { animation: pulse 1.2s infinite; }
+
+.small-note {
+  font-size: .95rem;
+  opacity: .8;
+}
+
+.progress {
+  width: min(280px, 85%);
+  height: 8px;
+  background: #f4d7e5;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px auto;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ff91b7, #c8a5ff);
+  transition: width .3s;
+}
+
+.heart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(65px, 90px));
+  gap: 12px;
+  justify-content: center;
+  margin: 22px 0;
+}
+
+.pop-heart {
+  background: #ffe1ee;
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  box-shadow: 0 4px 0 #efb2cb;
+  transition: .2s;
+}
+
+.pop-heart:hover { transform: scale(1.06); }
+.pop-heart.popped {
+  transform: scale(.5);
+  opacity: .25;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.cake {
+  font-size: clamp(5rem, 20vw, 8rem);
+  margin: 10px;
+  cursor: pointer;
+  animation: wiggle 2s infinite;
+  background: transparent;
+}
+
+.candle {
+  display: inline-block;
+  font-size: 2.5rem;
+  margin: 4px;
+  cursor: pointer;
+  background: transparent;
+  transition: .2s;
+}
+
+.candle.off {
+  opacity: .4;
+  filter: grayscale(1);
+  transform: translateY(6px);
+}
+
+.message-box {
+  background: #fff0f6;
+  border-radius: 22px;
+  padding: 20px;
+  margin: 18px auto;
+  width: min(100%, 400px);
+  min-height: 90px;
+}
+
+.reason {
+  background: white;
+  border: 1px solid #f9d3e2;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px 0;
+  animation: appear .4s;
+}
+
+.music-icon {
+  font-size: 4rem;
+  animation: pulse 1s infinite;
+}
+
+input {
+  font: inherit;
+  padding: 12px;
+  width: min(100%, 270px);
+  border: 2px solid #ffd0e2;
+  border-radius: 15px;
+  color: var(--text);
+  background: white;
+}
+
+footer {
+  font-size: .9rem;
+  margin-top: 20px;
+  opacity: .7;
+}
+
+@media (max-width: 400px) {
+  .screen { padding: 28px 12px; }
+  .card { padding: 23px 14px; }
+  .heart-grid { gap: 9px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="confetti"></div>
+
+<div class="floaty" style="left:8%;animation-delay:-2s">💗</div>
+<div class="floaty" style="left:28%;animation-delay:-5s">✨</div>
+<div class="floaty" style="left:76%;animation-delay:-3s">🎀</div>
+<div class="floaty" style="left:92%;animation-delay:-6s">💕</div>
+
+<!-- SCREEN 1: WELCOME -->
+<section class="screen active" id="s1">
+  <div class="emoji">🎁</div>
+  <p class="hand">shhhh🤫... someone has a surprise🎁!</p>
+  <div class="card">
+    <h1>Heyyy, My Bestie! 💗</h1>
+    <p>A tiny magical world has been made just for you. 🥹</p>
+    <p>Warning: excessive cuteness, emotional damage and silly nonsense ahead. 😂🎀</p>
+    <button class="btn" onclick="go(2)">OPEN YOUR SURPRISE 💌</button>
+  </div>
+  <footer>made with approximately a million hugs 🫂</footer>
+</section>
+
+<!-- SCREEN 2: BIRTHDAY -->
+<section class="screen" id="s2">
+  <div class="emoji">🎂</div>
+  <p class="hand">the day is finally here!</p>
+  <h1>HAPPY BIRTHDAY!!</h1>
+  <h2>MY BESTIEEE 💕</h2>
+  <div class="card">
+    <p>Today, the universe got a little more adorable because YOU were born. 🌷</p>
+    <p>May your days be full of laughter, your dreams come true, and your snacks never be stolen. 😌🍰</p>
+    <button class="btn" onclick="go(3)">NEXT, CUTIE ➜</button>
+  </div>
+</section>
+
+<!-- SCREEN 3: HEART GAME -->
+<section class="screen" id="s3">
+  <p class="hand">a little game for you...</p>
+  <h2>POP ALL THE HEARTS 💗</h2>
+  <div class="card">
+    <p>Every heart has a tiny piece of my love in it. Tap every single one! 🥹</p>
+    <div class="progress"><div id="progressBar"></div></div>
+    <p id="heartCount">0 / 9 hearts popped</p>
+    <div class="heart-grid" id="heartGrid"></div>
+    <div class="message-box" id="heartMessage">
+      💌 Pop a heart to reveal your surprise!
+    </div>
+    <button class="btn" id="heartNext" hidden onclick="go(4)">SEE THE MAGIC ✨</button>
+  </div>
+</section>
+
+<!-- SCREEN 4: SILLY ROAST -->
+<section class="screen" id="s4">
+  <div class="emoji">🤡</div>
+  <p class="hand">okay, enough sweetness...</p>
+  <h2>YOUR BIRTHDAY ROAST 😂</h2>
+  <div class="card">
+    <p>Today is your special day, so I made a scientifically accurate report about you.</p>
+    <div class="message-box" id="roastBox">
+      Ready to expose your silly self? 👀
+    </div>
+    <button class="btn" onclick="nextRoast()">EXPOSE ME 😭</button>
+    <button class="btn" id="roastNext" hidden onclick="go(5)">OKAY OKAY ➜</button>
+  </div>
+</section>
+
+<!-- SCREEN 5: CAKE -->
+<section class="screen" id="s5">
+  <p class="hand">make a wish, birthday baby!</p>
+  <h2>YOUR MAGIC CAKE 🎂</h2>
+  <div class="card">
+    <p>Tap each candle to blow it out and make your wish! ✨</p>
+    <div id="candles">
+      <button class="candle" onclick="blow(this)">🕯️</button>
+      <button class="candle" onclick="blow(this)">🕯️</button>
+      <button class="candle" onclick="blow(this)">🕯️</button>
+    </div>
+    <button class="cake" onclick="cakeClick()" aria-label="Tap the birthday cake">🎂</button>
+    <div class="message-box" id="cakeMessage">Your wish is waiting, birthday star! 🌟</div>
+    <button class="btn" onclick="go(6)">OPEN YOUR LETTER 💌</button>
+  </div>
+</section>
+
+<!-- SCREEN 6: SECRET LETTER -->
+<section class="screen" id="s6">
+  <div class="emoji">💌</div>
+  <p class="hand">a little secret from me to you</p>
+  <h2>OPEN WHENEVER YOU NEED A HUG 🫂</h2>
+  <div class="card">
+    <p>Some things deserve to be said a thousand times...</p>
+    <button class="btn" id="secretBtn" onclick="revealSecret()">UNLOCK SECRET 💗</button>
+    <div class="message-box" id="secretBox" hidden>
+      You're not just someone I know. You're someone I'm genuinely grateful to have in my life. 💕
+      <br><br>
+      I hope you never forget how special you are. Even on the days when things feel difficult, you deserve kindness, happiness and all the little things that make you smile. 🌷
+      <br><br>
+      Thank you for being YOU. Happy birthday, my favourite human! 🥹💗
+    </div>
+    <button class="btn" id="letterNext" hidden onclick="go(7)">ONE LAST SURPRISE 🎁</button>
+  </div>
+</section>
+
+<!-- SCREEN 7: MUSIC -->
+<section class="screen" id="s7">
+  <p class="hand">a tiny birthday concert 🎶</p>
+
+  <div class="card">
+    <div class="music-icon">🎵</div>
+    <h2>YOUR LITTLE MUSIC CORNER</h2>
+    <p>This song is specially for you, bestie! 🥹💕</p>
+
+    <audio id="birthdaySong" src="song.mp3" preload="auto" loop></audio>
+
+    <button class="btn" id="musicBtn" onclick="toggleRealMusic()">
+      ▶ PLAY MY SONG 💗
+    </button>
+
+    <p class="small-note">
+      Close your eyes, listen, and feel the birthday magic! 🎀✨
+    </p>
+
+    <button class="btn" onclick="go(8)">
+      THE FINAL SURPRISE 💗
+    </button>
+  </div>
+</section>
+
+<!-- SCREEN 8: FINAL -->
+<section class="screen" id="s8">
+  <div class="emoji">💖</div>
+  <p class="hand">and one last thing...</p>
+  <div class="card">
+    <h1>YOU ARE SO LOVED! 💗</h1>
+    <p>May this new chapter bring you beautiful memories, happy surprises, and a thousand reasons to smile. 🌸</p>
+    <p>Keep being your wonderfully silly, kind and unique self. Never stop dreaming big! 🦋</p>
+    <h2>BESTIES FOREVER ♾️💕</h2>
+    <p class="hand">sending you the biggest virtual hug everrrrr!! 🫂</p>
+    <button class="btn" onclick="celebrate()">MORE HEARTS!! 💗</button>
+    <button class="btn" onclick="go(1)">REPLAY THE MAGIC ↻</button>
+  </div>
+  <footer>made with love, just for you 🎀</footer>
+</section>
+
+<script>
+let current = 1;
+let popped = 0;
+let roastIndex = 0;
+let candleCount = 0;
+let cakeTaps = 0;
+let musicOn = false;
+let audioContext = null;
+let melodyTimer = null;
+let melodyStep = 0;
+
+
+function go(n) {
+  // Stop the birthday song when changing slides
+  const song = document.getElementById("birthdaySong");
+
+  if (song) {
+    song.pause();
+    song.currentTime = 0;
+  }
+
+  // Update the slides
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  const nextScreen = document.getElementById("s" + n);
+
+  if (nextScreen) {
+    nextScreen.classList.add("active");
+  }
+
+  // Reset the music button text
+  const musicBtn = document.getElementById("musicBtn");
+
+  if (musicBtn) {
+    musicBtn.textContent = "▶ PLAY MY SONG 💗";
+  }
+}
+
+// HEART-POPPING GAME
+const heartMessages = [
+  "You're a whole sunshine in human form! ☀️",
+  "Your smile deserves its own fan club! 🥹",
+  "You make ordinary days feel special. 🌷",
+  "You deserve all the happiness in the world! 💕",
+  "Never forget how amazing you are! ✨",
+  "Sending you a billion invisible hugs! 🫂",
+  "Your dreams deserve to come true! 🦋",
+  "Life is sweeter with you around! 🍰",
+  "I LOVE YOU, MY BESTIE! 💗 FOREVER!"
+];
+
+function buildHearts() {
+  const grid = document.getElementById('heartGrid');
+  grid.innerHTML = '';
+  popped = 0;
+  document.getElementById('heartCount').textContent = '0 / 9 hearts popped';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('heartMessage').textContent = '💌 Pop a heart to reveal your surprise!';
+  document.getElementById('heartNext').hidden = true;
+
+  for (let i = 0; i < 9; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'pop-heart';
+    btn.textContent = '💗';
+    btn.setAttribute('aria-label', 'Pop heart ' + (i + 1));
+    btn.onclick = () => popHeart(btn, i);
+    grid.appendChild(btn);
+  }
+}
+
+function popHeart(btn, index) {
+  if (btn.classList.contains('popped')) return;
+  btn.classList.add('popped');
+  btn.textContent = '✨';
+  popped++;
+  document.getElementById('heartCount').textContent = popped + ' / 9 hearts popped';
+  document.getElementById('progressBar').style.width = (popped / 9 * 100) + '%';
+  document.getElementById('heartMessage').textContent = heartMessages[index];
+  burstHearts(8);
+
+  if (popped === 9) {
+    document.getElementById('heartMessage').textContent =
+      'I LOVE YOU, MY BESTIE! 💗 That was the final heart, and all my love was inside!';
+    document.getElementById('heartNext').hidden = false;
+    celebrate();
+  }
+}
+
+function burstHearts(count) {
+  const symbols = ['💗', '💕', '💖', '✨', '🌸'];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.className = 'confetti-piece';
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = (Math.random() * 100) + 'vw';
+    el.style.top = (10 + Math.random() * 50) + 'vh';
+    el.style.fontSize = (18 + Math.random() * 20) + 'px';
+    el.style.animationDuration = (2 + Math.random() * 2) + 's';
+    document.getElementById('confetti').appendChild(el);
+    setTimeout(() => el.remove(), 4500);
+  }
+}
+
+function celebrate() {
+  burstHearts(35);
+}
+
+buildHearts();
+
+// FUNNY ROAST
+const roasts = [
+  "You are 10% maturity and 90% random noises. 😂",
+  "Your talent for being dramatic deserves an award. 🏆",
+  "You say 'I'm on my way' while still choosing an outfit. 😭",
+  "You are the CEO of overthinking absolutely NOTHING. 🤡",
+  "Annoying? Sometimes. Adorable? Unfortunately, ALWAYS. 💗"
+];
+
+function nextRoast() {
+  const box = document.getElementById('roastBox');
+  box.textContent = roasts[roastIndex];
+  roastIndex++;
+  if (roastIndex >= roasts.length) {
+    roastIndex = 0;
+    document.getElementById('roastNext').hidden = false;
+  }
+}
+
+// CAKE AND CANDLES
+function blow(btn) {
+  if (btn.classList.contains('off')) return;
+  btn.classList.add('off');
+  btn.textContent = '💨';
+  candleCount++;
+  if (candleCount === 3) {
+    document.getElementById('cakeMessage').textContent =
+      '✨ ALL CANDLES OUT! Your wish is on its way! Make it a beautiful one. 💗';
+    celebrate();
+  } else {
+    document.getElementById('cakeMessage').textContent =
+      (3 - candleCount) + ' candle(s) left! You got this! 🎂';
+  }
+}
+
+function cakeClick() {
+  cakeTaps++;
+  const messages = [
+    'HEY! The cake is for eating, not poking! 😂',
+    'Okay, one tiny bite... 🍰',
+    'CAKE ATTACK!! Happy birthday! 🎂💗'
+  ];
+  document.getElementById('cakeMessage').textContent =
+    messages[Math.min(cakeTaps - 1, messages.length - 1)];
+  if (cakeTaps % 3 === 0) celebrate();
+}
+
+// SECRET MESSAGE
+function revealSecret() {
+  document.getElementById('secretBox').hidden = false;
+  document.getElementById('secretBtn').hidden = true;
+  document.getElementById('letterNext').hidden = false;
+  celebrate();
+}
+
+// OPTIONAL MUSIC: a simple original synthesized melody.
+// Browsers require a user tap before audio can play.
+async function toggleRealMusic() {
+  const song = document.getElementById("birthdaySong");
+  const btn = document.getElementById("musicBtn");
+
+  if (!song || !btn) {
+    alert("Music player not found! Please check the Screen 7 HTML.");
+    return;
+  }
+
+  if (song.paused) {
+    try {
+      await song.play();
+      btn.textContent = "⏸ PAUSE MY SONG 💗";
+    } catch (error) {
+      console.error("Audio error:", error);
+      alert("Song could not play. Check the file path and browser Console.");
+      btn.textContent = "▶ TRY AGAIN 🎵";
+    }
+  } else {
+    song.pause();
+    btn.textContent = "▶ PLAY MY SONG 💗";
+  }
+}
+function playMelody() {
+  if (!musicOn || !audioContext) return;
+
+  const notes = [523.25, 523.25, 587.33, 523.25, 698.46, 659.25,
+                 523.25, 523.25, 587.33, 523.25, 783.99, 698.46,
+                 523.25, 523.25, 1046.5, 880, 698.46, 659.25, 587.33];
+
+  const frequency = notes[melodyStep % notes.length];
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  oscillator.type = 'sine';
+  oscillator.frequency.value = frequency;
+  gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.12, audioContext.currentTime + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.32);
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + 0.34);
+
+  melodyStep++;
+  melodyTimer = setTimeout(playMelody, 380);
+}
+
+// Reset the game when replaying from the beginning.
+const originalGo = go;
+go = function(number) {
+  if (number === 1) {
+    roastIndex = 0;
+    candleCount = 0;
+    cakeTaps = 0;
+    document.querySelectorAll('.candle').forEach(c => {
+      c.classList.remove('off');
+      c.textContent = '🕯️';
+    });
+    document.getElementById('cakeMessage').textContent =
+      'Your wish is waiting, birthday star! 🌟';
+    document.getElementById('roastBox').textContent =
+      'Ready to expose your silly self? 👀';
+    document.getElementById('roastNext').hidden = true;
+    document.getElementById('secretBox').hidden = true;
+    document.getElementById('secretBtn').hidden = false;
+    document.getElementById('letterNext').hidden = true;
+    if (musicOn) toggleMusic();
+    buildHearts();
+  }
+  originalGo(number);
+};
+</script>
+
+</body>
+</html>
